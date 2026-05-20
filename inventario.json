@@ -1,0 +1,88 @@
+{
+    "Cervezas": [
+        {
+            "codigo": "C001",
+            "nombre": "Corona",
+            "precio": 5000,
+            "stock": 10
+        },
+        {
+            "codigo": "C002",
+            "nombre": "Heineken",
+            "precio": 6000,
+            "stock": 8
+        },
+        {
+            "codigo": "C003",
+            "nombre": "Bodweiser",
+            "precio": 7000,
+            "stock": 15
+        },
+        {
+            "codigo": "C003",
+            "nombre": "Budweiser",
+            "precio": 7000,
+            "stock": 0
+        },
+        {
+            "codigo": "C003",
+            "nombre": "Budweiser",
+            "precio": 7000,
+            "stock": 15
+        },
+        {
+            "codigo": "C003",
+            "nombre": "Budweiser",
+            "precio": 7000,
+            "stock": 15
+        }
+    ],
+    "Whisky": [
+        {
+            "codigo": "W001",
+            "nombre": "Jack Daniels",
+            "precio": 120000,
+            "stock": 5
+        }
+    ],
+    "Vinos": [
+        {
+            "codigo": "V001",
+            "nombre": "Casillero del Diablo",
+            "precio": 45000,
+            "stock": 7
+        }
+    ],
+    "Ron": [
+        {
+            "codigo": "R001",
+            "nombre": "Ron Medellín",
+            "precio": 40000,
+            "stock": 12
+        }
+    ],
+    "Vodka": [
+        {
+            "codigo": "VO001",
+            "nombre": "Smirnoff",
+            "precio": 55000,
+            "stock": 9
+        }
+    ],
+    "Tequila": [
+        {
+            "codigo": "T001",
+            "nombre": "José Cuervo",
+            "precio": 95000,
+            "stock": 4
+        }
+    ],
+    "Faltantes": [
+        {
+            "nombre": "Old Parr"
+        },
+        {
+            "nombre": "Budweiser"
+        }
+    ]
+}
