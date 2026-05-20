@@ -3,40 +3,40 @@ from tkinter import ttk
 from tkinter import messagebox
 
 from logic.funciones_inventario import (
-    registrar_venta,
+    actualizar_stock,
     obtener_productos_categoria
 )
 
 
-def abrir_ventas():
+def abrir_actualizar_stock():
 
-    ventana_ventas = tk.Toplevel()
+    ventana_stock = tk.Toplevel()
 
-    ventana_ventas.title("💰 Registrar Venta")
-    ventana_ventas.geometry("850x760")
-    ventana_ventas.config(bg="#1a1a1a")
-    ventana_ventas.resizable(False, False)
+    ventana_stock.title("📦 Actualizar Stock")
+    ventana_stock.geometry("760x720")
+    ventana_stock.config(bg="#1a1a1a")
+    ventana_stock.resizable(False, False)
 
 
     # ================= TITULO ================= #
 
     titulo = tk.Label(
-        ventana_ventas,
-        text="💰 REGISTRAR VENTA",
-        font=("Arial", 28, "bold"),
+        ventana_stock,
+        text="📦 ACTUALIZAR STOCK",
+        font=("Arial", 26, "bold"),
         bg="#1a1a1a",
         fg="white"
     )
 
-    titulo.pack(pady=25)
+    titulo.pack(pady=20)
 
 
     # ================= SUBTITULO ================= #
 
     subtitulo = tk.Label(
-        ventana_ventas,
-        text="Seleccione categoría, producto y cantidad",
-        font=("Arial", 13),
+        ventana_stock,
+        text="Agregar unidades al inventario",
+        font=("Arial", 12),
         bg="#1a1a1a",
         fg="#cfcfcf"
     )
@@ -47,43 +47,54 @@ def abrir_ventas():
     # ================= LINEA ================= #
 
     linea = tk.Frame(
-        ventana_ventas,
+        ventana_stock,
         bg="#333333",
         height=2,
         width=500
     )
 
-    linea.pack(pady=15)
+    linea.pack(pady=10)
 
 
     # ================= FRAME PRINCIPAL ================= #
 
     frame = tk.Frame(
-        ventana_ventas,
+        ventana_stock,
         bg="#1a1a1a"
     )
 
     frame.pack(pady=25)
 
 
-    # ================= CATEGORIA ================= #
+    # ================= LABELS ================= #
 
-    label_categoria = tk.Label(
-        frame,
-        text="📦 Categoría",
-        font=("Arial", 13, "bold"),
-        bg="#1a1a1a",
-        fg="white"
-    )
+    labels = [
+        "📦 Categoría",
+        "🍾 Producto",
+        "➕ Cantidad"
+    ]
 
-    label_categoria.grid(
-        row=0,
-        column=0,
-        padx=10,
-        pady=18,
-        sticky="w"
-    )
 
+    for i, texto in enumerate(labels):
+
+        label = tk.Label(
+            frame,
+            text=texto,
+            font=("Arial", 12, "bold"),
+            bg="#1a1a1a",
+            fg="white"
+        )
+
+        label.grid(
+            row=i,
+            column=0,
+            padx=15,
+            pady=18,
+            sticky="w"
+        )
+
+
+    # ================= COMBOBOX CATEGORIA ================= #
 
     categorias = [
         "Cervezas",
@@ -99,7 +110,7 @@ def abrir_ventas():
         frame,
         values=categorias,
         state="readonly",
-        width=38,
+        width=35,
         font=("Arial", 11)
     )
 
@@ -112,29 +123,12 @@ def abrir_ventas():
     combo_categoria.current(0)
 
 
-    # ================= PRODUCTO ================= #
-
-    label_producto = tk.Label(
-        frame,
-        text="🍾 Producto",
-        font=("Arial", 13, "bold"),
-        bg="#1a1a1a",
-        fg="white"
-    )
-
-    label_producto.grid(
-        row=1,
-        column=0,
-        padx=10,
-        pady=18,
-        sticky="w"
-    )
-
+    # ================= COMBOBOX PRODUCTOS ================= #
 
     combo_producto = ttk.Combobox(
         frame,
         state="readonly",
-        width=38,
+        width=35,
         font=("Arial", 11)
     )
 
@@ -145,10 +139,10 @@ def abrir_ventas():
     )
 
 
-    # ================= INFO PRODUCTO ================= #
+    # ================= PANEL PRODUCTO ================= #
 
     info_producto = tk.Label(
-        ventana_ventas,
+        ventana_stock,
         text="",
         font=("Arial", 12, "bold"),
         bg="#242424",
@@ -169,23 +163,23 @@ def abrir_ventas():
 
         productos = obtener_productos_categoria(categoria)
 
-        nombres_productos = []
+        nombres = []
 
 
         for producto in productos:
 
-            texto_producto = (
+            texto = (
                 f"{producto['nombre']} "
                 f"(Stock: {producto['stock']})"
             )
 
-            nombres_productos.append(texto_producto)
+            nombres.append(texto)
 
 
-        combo_producto["values"] = nombres_productos
+        combo_producto["values"] = nombres
 
 
-        if nombres_productos:
+        if nombres:
 
             combo_producto.current(0)
 
@@ -198,7 +192,7 @@ def abrir_ventas():
     )
 
 
-    # ================= MOSTRAR INFO ================= #
+    # ================= INFO PRODUCTO ================= #
 
     def mostrar_info_producto(event=None):
 
@@ -213,14 +207,32 @@ def abrir_ventas():
 
             if producto["nombre"] == nombre:
 
+                stock = producto["stock"]
+
+
+                if stock <= 5:
+
+                    alerta = "\n⚠️ Stock bajo"
+
+                    color = "#EF5350"
+
+                else:
+
+                    alerta = "\n✅ Stock estable"
+
+                    color = "#66BB6A"
+
+
                 texto = (
                     f"🥃 Producto: {producto['nombre']}\n"
                     f"💰 Precio: ${producto['precio']}\n"
-                    f"📦 Stock disponible: {producto['stock']}"
+                    f"📦 Stock actual: {stock}"
+                    f"{alerta}"
                 )
 
                 info_producto.config(
-                    text=texto
+                    text=texto,
+                    fg=color
                 )
 
 
@@ -233,29 +245,12 @@ def abrir_ventas():
     actualizar_productos()
 
 
-    # ================= CANTIDAD ================= #
-
-    label_cantidad = tk.Label(
-        frame,
-        text="📦 Cantidad",
-        font=("Arial", 13, "bold"),
-        bg="#1a1a1a",
-        fg="white"
-    )
-
-    label_cantidad.grid(
-        row=2,
-        column=0,
-        padx=10,
-        pady=18,
-        sticky="w"
-    )
-
+    # ================= ENTRY CANTIDAD ================= #
 
     entrada_cantidad = tk.Entry(
         frame,
-        font=("Arial", 13),
-        width=40,
+        font=("Arial", 12),
+        width=38,
         bg="#2b2b2b",
         fg="white",
         insertbackground="white",
@@ -273,7 +268,7 @@ def abrir_ventas():
     # ================= RESULTADO ================= #
 
     resultado_label = tk.Label(
-        ventana_ventas,
+        ventana_stock,
         text="",
         font=("Arial", 12, "bold"),
         bg="#1a1a1a"
@@ -282,28 +277,30 @@ def abrir_ventas():
     resultado_label.pack(pady=15)
 
 
-    # ================= FUNCION VENDER ================= #
+    # ================= FUNCION ACTUALIZAR ================= #
 
-    def vender_producto():
+    def actualizar():
 
         nombre_producto = combo_producto.get().split(" (Stock")[0]
 
 
         try:
 
-            cantidad = int(entrada_cantidad.get())
+            cantidad = int(
+                entrada_cantidad.get()
+            )
 
         except ValueError:
 
-            messagebox.showerror(
-                "Error",
-                "⚠️ La cantidad debe ser numérica"
+            resultado_label.config(
+                text="⚠️ La cantidad debe ser numérica",
+                fg="#EF5350"
             )
 
             return
 
 
-        resultado = registrar_venta(
+        resultado = actualizar_stock(
             nombre_producto,
             cantidad
         )
@@ -312,7 +309,7 @@ def abrir_ventas():
         if resultado:
 
             resultado_label.config(
-                text="✅ Venta registrada correctamente",
+                text="✅ Stock actualizado correctamente",
                 fg="#66BB6A"
             )
 
@@ -323,19 +320,19 @@ def abrir_ventas():
         else:
 
             resultado_label.config(
-                text="❌ Stock insuficiente o producto inexistente",
+                text="❌ Error al actualizar stock",
                 fg="#EF5350"
             )
 
 
-    # ================= BOTON VENDER ================= #
+    # ================= BOTON ACTUALIZAR ================= #
 
-    btn_vender = tk.Button(
-        ventana_ventas,
-        text="💸 Registrar Venta",
-        bg="#8E24AA",
+    btn_actualizar = tk.Button(
+        ventana_stock,
+        text="📦 Actualizar Stock",
+        bg="#00ACC1",
         fg="white",
-        activebackground="#BA68C8",
+        activebackground="#26C6DA",
         activeforeground="white",
         font=("Arial", 12, "bold"),
         width=25,
@@ -343,36 +340,43 @@ def abrir_ventas():
         relief="flat",
         bd=0,
         cursor="hand2",
-        command=vender_producto
+        command=actualizar
     )
 
-    btn_vender.pack(pady=10)
+    btn_actualizar.pack(pady=15)
 
 
     # ================= HOVER ================= #
 
     def entrar_hover(e):
 
-        btn_vender.config(
-            bg="#BA68C8"
+        btn_actualizar.config(
+            bg="#26C6DA"
         )
 
 
     def salir_hover(e):
 
-        btn_vender.config(
-            bg="#8E24AA"
+        btn_actualizar.config(
+            bg="#00ACC1"
         )
 
 
-    btn_vender.bind("<Enter>", entrar_hover)
-    btn_vender.bind("<Leave>", salir_hover)
+    btn_actualizar.bind(
+        "<Enter>",
+        entrar_hover
+    )
+
+    btn_actualizar.bind(
+        "<Leave>",
+        salir_hover
+    )
 
 
     # ================= BOTON CERRAR ================= #
 
     btn_cerrar = tk.Button(
-        ventana_ventas,
+        ventana_stock,
         text="❌ Cerrar",
         bg="#C62828",
         fg="white",
@@ -384,7 +388,7 @@ def abrir_ventas():
         relief="flat",
         bd=0,
         cursor="hand2",
-        command=ventana_ventas.destroy
+        command=ventana_stock.destroy
     )
 
-    btn_cerrar.pack(pady=15)
+    btn_cerrar.pack(pady=10)

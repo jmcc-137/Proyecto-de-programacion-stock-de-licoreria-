@@ -37,20 +37,19 @@
             "stock": 15
         }
     ],
-    "Whisky": [
-        {
-            "codigo": "W001",
-            "nombre": "Jack Daniels",
-            "precio": 120000,
-            "stock": 5
-        }
-    ],
+    "Whisky": [],
     "Vinos": [
         {
             "codigo": "V001",
             "nombre": "Casillero del Diablo",
             "precio": 45000,
-            "stock": 7
+            "stock": 0
+        },
+        {
+            "codigo": "C009",
+            "nombre": "vinotinto",
+            "precio": 1500000,
+            "stock": 5
         }
     ],
     "Ron": [
@@ -83,6 +82,9 @@
         },
         {
             "nombre": "Budweiser"
+        },
+        {
+            "nombre": "Casillero del Diablo"
         }
     ]
 }
