@@ -35,6 +35,12 @@
             "nombre": "Budweiser",
             "precio": 7000,
             "stock": 15
+        },
+        {
+            "codigo": "P002",
+            "nombre": "Poker",
+            "precio": 8000,
+            "stock": 20
         }
     ],
     "Whisky": [],

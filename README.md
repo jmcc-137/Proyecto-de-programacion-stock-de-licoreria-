@@ -1,38 +1,187 @@
-# Sistema de Stock para Licorería
+# 🍷 Sistema de Gestión de Stock para Licorería
 
-## Descripción
-Este proyecto es un sistema básico de gestión de inventario para una licorería desarrollado en Python.  
-Permite administrar productos utilizando diccionarios y almacenamiento en archivos JSON como simulación de base de datos.
+Aplicación de escritorio desarrollada en **Python** utilizando **Tkinter** para la gestión de inventario de una licorería.
 
----
-
-## Funcionalidades
-- Agregar productos
-- Mostrar inventario
-- Buscar productos
-- Actualizar stock
-- Eliminar productos
-- Registrar ventas
-- Guardar información en archivo JSON
+El sistema permite administrar productos, controlar el stock, registrar ventas y visualizar productos agotados mediante una interfaz gráfica moderna y organizada.
 
 ---
 
-## Tecnologías utilizadas
-- Python
+# 📌 Características
+
+✅ Gestión completa de inventario  
+✅ Registro de productos  
+✅ Actualización de stock  
+✅ Registro de ventas  
+✅ Búsqueda de productos  
+✅ Control de productos agotados  
+✅ Eliminación de productos  
+✅ Persistencia de datos usando JSON  
+✅ Interfaz gráfica con Tkinter  
+✅ Diseño modular del proyecto  
+
+---
+
+# 🖥️ Tecnologías Utilizadas
+
+- Python 3
+- Tkinter
 - JSON
-- Diccionarios
-- Programación modular
+- Git & GitHub
+- Visual Studio Code
 
 ---
 
-## Estructura del proyecto
+# 📂 Estructura del Proyecto
 
-```text
-licoreria_stock/
+```bash
+Sistema_Gestion_Stock_Licoreria/
+│
+├── data/
+│   └── licoreria.json
+│
+├── interfaces/
+│   ├── menu_principal.py
+│   ├── inventario.py
+│   ├── agregar_producto.py
+│   ├── actualizar_stock.py
+│   ├── ventas.py
+│   ├── busqueda.py
+│   ├── faltantes.py
+│   ├── eliminar_producto.py
+│   └── estadisticas.py
+│
+├── logic/
+│   ├── funciones_json.py
+│   └── funciones_inventario.py
 │
 ├── main.py
-├── menu.py
-├── funciones.py
-├── validaciones.py
-├── inventario.json
 └── README.md
+```
+
+---
+
+# ⚙️ Funcionalidades del Sistema
+
+## 📦 Inventario
+
+Visualiza todos los productos registrados dentro del sistema mediante una tabla organizada.
+
+---
+
+## ➕ Agregar Producto
+
+Permite registrar nuevos productos indicando:
+
+- Categoría
+- Código
+- Nombre
+- Precio
+- Stock
+
+---
+
+## 📦 Actualizar Stock
+
+Permite agregar nuevas unidades a productos ya existentes.
+
+---
+
+## 🔍 Buscar Producto
+
+Permite buscar bebidas por:
+
+- Nombre completo
+- Letras
+- Coincidencias parciales
+
+---
+
+## 💰 Registrar Venta
+
+Permite registrar ventas y disminuir automáticamente el stock del producto seleccionado.
+
+---
+
+## ⚠️ Productos Faltantes
+
+Muestra automáticamente los productos agotados o sin stock disponible.
+
+---
+
+## ❌ Eliminar Producto
+
+Permite eliminar productos del inventario.
+
+---
+
+# 💾 Persistencia de Datos
+
+La información se almacena utilizando archivos JSON.
+
+Esto permite:
+
+- Guardar datos permanentemente
+- Recuperar productos al iniciar el sistema
+- Simular una pequeña base de datos
+
+---
+
+# 🚀 Cómo Ejecutar el Proyecto
+
+## 1️⃣ Clonar el repositorio
+
+```bash
+git clone https://github.com/TU-USUARIO/TU-REPOSITORIO.git
+```
+
+---
+
+## 2️⃣ Entrar al proyecto
+
+```bash
+cd Sistema_Gestion_Stock_Licoreria
+```
+
+---
+
+## 3️⃣ Ejecutar el programa
+
+```bash
+python main.py
+```
+
+---
+
+# 📚 Conceptos de Programación Aplicados
+
+- Variables
+- Condicionales
+- Ciclos
+- Funciones
+- Listas
+- Diccionarios
+- Manejo de archivos
+- Modularización
+- Interfaces gráficas
+
+---
+
+# 👨‍💻 Autor(es)
+
+- Tu Nombre
+- Nombre compañero
+
+---
+
+# 🎓 Proyecto Académico
+
+Proyecto desarrollado para la asignatura:
+
+**Fundamentos de Programación**  
+Universidad Autónoma de Bucaramanga
+
+---
+
+# 📄 Licencia
+
+Proyecto de uso académico y educativo.
