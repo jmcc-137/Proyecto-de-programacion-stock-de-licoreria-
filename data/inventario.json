@@ -1,0 +1,278 @@
+{
+    "Cervezas": [
+        {
+            "codigo": "C001",
+            "nombre": "Corona",
+            "precio": 5000,
+            "stock": 18
+        },
+        {
+            "codigo": "C002",
+            "nombre": "Poker",
+            "precio": 4500,
+            "stock": 30
+        },
+        {
+            "codigo": "C003",
+            "nombre": "Aguila Original",
+            "precio": 4000,
+            "stock": 25
+        },
+        {
+            "codigo": "C004",
+            "nombre": "Aguila Light",
+            "precio": 4500,
+            "stock": 20
+        },
+        {
+            "codigo": "C005",
+            "nombre": "Club Colombia Dorada",
+            "precio": 6000,
+            "stock": 15
+        },
+        {
+            "codigo": "C006",
+            "nombre": "Club Colombia Negra",
+            "precio": 6500,
+            "stock": 10
+        },
+        {
+            "codigo": "C007",
+            "nombre": "Heineken",
+            "precio": 7000,
+            "stock": 12
+        },
+        {
+            "codigo": "C008",
+            "nombre": "Budweiser",
+            "precio": 7500,
+            "stock": 14
+        },
+        {
+            "codigo": "C009",
+            "nombre": "Costeñita",
+            "precio": 3000,
+            "stock": 40
+        }
+    ],
+
+    "Whisky": [
+        {
+            "codigo": "W001",
+            "nombre": "Old Parr",
+            "precio": 120000,
+            "stock": 8
+        },
+        {
+            "codigo": "W002",
+            "nombre": "Buchanan's Deluxe",
+            "precio": 160000,
+            "stock": 6
+        },
+        {
+            "codigo": "W003",
+            "nombre": "Jack Daniel's",
+            "precio": 145000,
+            "stock": 7
+        },
+        {
+            "codigo": "W004",
+            "nombre": "Johnnie Walker Red Label",
+            "precio": 95000,
+            "stock": 10
+        },
+        {
+            "codigo": "W005",
+            "nombre": "Johnnie Walker Black Label",
+            "precio": 180000,
+            "stock": 5
+        },
+        {
+            "codigo": "W006",
+            "nombre": "Something Special",
+            "precio": 85000,
+            "stock": 11
+        }
+    ],
+
+    "Vinos": [
+        {
+            "codigo": "V001",
+            "nombre": "Casillero del Diablo",
+            "precio": 45000,
+            "stock": 9
+        },
+        {
+            "codigo": "V002",
+            "nombre": "Gato Negro",
+            "precio": 35000,
+            "stock": 14
+        },
+        {
+            "codigo": "V003",
+            "nombre": "Vino Sanson",
+            "precio": 18000,
+            "stock": 20
+        },
+        {
+            "codigo": "V004",
+            "nombre": "Santa Helena",
+            "precio": 28000,
+            "stock": 13
+        },
+        {
+            "codigo": "V005",
+            "nombre": "Concha y Toro",
+            "precio": 50000,
+            "stock": 6
+        }
+    ],
+
+    "Ron": [
+        {
+            "codigo": "R001",
+            "nombre": "Ron Medellín",
+            "precio": 40000,
+            "stock": 18
+        },
+        {
+            "codigo": "R002",
+            "nombre": "Ron Viejo de Caldas",
+            "precio": 55000,
+            "stock": 12
+        },
+        {
+            "codigo": "R003",
+            "nombre": "Ron Caldas Tradicional",
+            "precio": 38000,
+            "stock": 15
+        },
+        {
+            "codigo": "R004",
+            "nombre": "Bacardí Carta Blanca",
+            "precio": 65000,
+            "stock": 7
+        },
+        {
+            "codigo": "R005",
+            "nombre": "Bacardí Añejo",
+            "precio": 72000,
+            "stock": 5
+        }
+    ],
+
+    "Vodka": [
+        {
+            "codigo": "VO001",
+            "nombre": "Smirnoff",
+            "precio": 55000,
+            "stock": 11
+        },
+        {
+            "codigo": "VO002",
+            "nombre": "Absolut Vodka",
+            "precio": 95000,
+            "stock": 6
+        },
+        {
+            "codigo": "VO003",
+            "nombre": "Grey Goose",
+            "precio": 180000,
+            "stock": 3
+        },
+        {
+            "codigo": "VO004",
+            "nombre": "Skyy Vodka",
+            "precio": 70000,
+            "stock": 8
+        }
+    ],
+
+    "Tequila": [
+        {
+            "codigo": "T001",
+            "nombre": "José Cuervo",
+            "precio": 95000,
+            "stock": 8
+        },
+        {
+            "codigo": "T002",
+            "nombre": "Don Julio",
+            "precio": 220000,
+            "stock": 4
+        },
+        {
+            "codigo": "T003",
+            "nombre": "1800 Reposado",
+            "precio": 175000,
+            "stock": 5
+        },
+        {
+            "codigo": "T004",
+            "nombre": "Olmeca",
+            "precio": 85000,
+            "stock": 9
+        }
+    ],
+
+    "Aguardiente": [
+        {
+            "codigo": "A001",
+            "nombre": "Aguardiente Antioqueño",
+            "precio": 38000,
+            "stock": 25
+        },
+        {
+            "codigo": "A002",
+            "nombre": "Aguardiente Nectar",
+            "precio": 36000,
+            "stock": 18
+        },
+        {
+            "codigo": "A003",
+            "nombre": "Aguardiente Amarillo",
+            "precio": 42000,
+            "stock": 14
+        },
+        {
+            "codigo": "A004",
+            "nombre": "Aguardiente Cristal",
+            "precio": 35000,
+            "stock": 16
+        }
+    ],
+
+    "Faltantes": [
+        {
+            "nombre": "Don Julio"
+        }
+    ],
+
+    "Ventas": [
+        {
+            "producto": "Corona",
+            "cantidad": 3,
+            "total": 15000
+        },
+        {
+            "producto": "Poker",
+            "cantidad": 5,
+            "total": 22500
+        },
+        {
+            "producto": "Old Parr",
+            "cantidad": 2,
+            "total": 240000
+        },
+        {
+            "producto": "Ron Medellín",
+            "cantidad": 4,
+            "total": 160000
+        },
+        {
+            "producto": "Aguardiente Antioqueño",
+            "cantidad": 6,
+            "total": 228000
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 import json
 
-RUTA_ARCHIVO = "inventario.json"
+RUTA_ARCHIVO = "data\inventario.json"
 
 
 def cargar_datos():
