@@ -14,13 +14,24 @@ def agregar_producto(
     datos = cargar_datos()
 
     if categoria not in datos:
+
         datos[categoria] = []
 
-    for producto in datos[categoria]:
 
-        if producto["codigo"] == codigo:
+    # ================= VALIDAR CODIGO ================= #
 
-            return False
+    for categoria_actual in datos:
+
+        if categoria_actual == "Faltantes" or categoria_actual == "Ventas":
+            continue
+
+
+        for producto in datos[categoria_actual]:
+
+            if producto["codigo"] == codigo:
+
+                return False
+
 
     nuevo_producto = {
 
@@ -29,6 +40,7 @@ def agregar_producto(
         "precio": precio,
         "stock": stock
     }
+
 
     datos[categoria].append(
         nuevo_producto
@@ -41,46 +53,109 @@ def agregar_producto(
 
 # ================= BUSCAR PRODUCTO ================= #
 
-def buscar_producto(nombre_producto):
+def buscar_producto(
+    nombre_producto="",
+    categoria_busqueda=None
+):
 
     datos = cargar_datos()
 
     resultado = []
+
 
     for categoria in datos:
 
         if categoria == "Faltantes" or categoria == "Ventas":
             continue
 
+
+        # ================= FILTRAR CATEGORIA ================= #
+
+        if categoria_busqueda:
+
+            if categoria.lower() != categoria_busqueda.lower():
+
+                continue
+
+
         for producto in datos[categoria]:
 
             if nombre_producto.lower() in producto["nombre"].lower():
 
-                resultado.append(producto)
+                resultado.append({
+
+                    "categoria": categoria,
+                    "codigo": producto["codigo"],
+                    "nombre": producto["nombre"],
+                    "precio": producto["precio"],
+                    "stock": producto["stock"]
+                })
+
 
     return resultado
 
 
 # ================= ACTUALIZAR STOCK ================= #
 
-def actualizar_stock(nombre_producto, cantidad):
+def actualizar_stock(
+    nombre_producto,
+    cantidad
+):
 
     datos = cargar_datos()
+
 
     for categoria in datos:
 
         if categoria == "Faltantes" or categoria == "Ventas":
             continue
 
+
         for producto in datos[categoria]:
 
             if producto["nombre"].lower() == nombre_producto.lower():
 
-                producto["stock"] += cantidad
+                nuevo_stock = (
+                    producto["stock"] +
+                    cantidad
+                )
+
+
+                # ================= EVITAR NEGATIVOS ================= #
+
+                if nuevo_stock < 0:
+
+                    return False
+
+
+                producto["stock"] = nuevo_stock
+
+
+                # ================= AGREGAR A FALTANTES ================= #
+
+                if producto["stock"] == 0:
+
+                    existe = False
+
+
+                    for faltante in datos["Faltantes"]:
+
+                        if faltante["nombre"].lower() == nombre_producto.lower():
+
+                            existe = True
+
+
+                    if not existe:
+
+                        datos["Faltantes"].append({
+
+                            "nombre": producto["nombre"]
+                        })
+
 
                 # ================= ELIMINAR DE FALTANTES ================= #
 
-                if producto["stock"] > 0:
+                else:
 
                     datos["Faltantes"] = [
 
@@ -92,9 +167,11 @@ def actualizar_stock(nombre_producto, cantidad):
                         != nombre_producto.lower()
                     ]
 
+
                 guardar_datos(datos)
 
                 return True
+
 
     return False
 
@@ -114,42 +191,97 @@ def obtener_productos_categoria(categoria):
 
 # ================= REGISTRAR VENTA ================= #
 
-def registrar_venta(nombre_producto, cantidad):
+def registrar_venta(
+    productos_venta
+):
 
     datos = cargar_datos()
+
 
     if "Ventas" not in datos:
 
         datos["Ventas"] = []
 
-    for categoria in datos:
 
-        if categoria == "Faltantes" or categoria == "Ventas":
-            continue
+    # ================= VALIDAR STOCK ================= #
 
-        for producto in datos[categoria]:
+    for item in productos_venta:
 
-            if producto["nombre"].lower() == nombre_producto.lower():
+        nombre_producto = item["producto"]
 
-                if producto["stock"] >= cantidad:
+        cantidad = item["cantidad"]
+
+
+        encontrado = False
+
+
+        for categoria in datos:
+
+            if categoria == "Faltantes" or categoria == "Ventas":
+                continue
+
+
+            for producto in datos[categoria]:
+
+                if producto["nombre"].lower() == nombre_producto.lower():
+
+                    encontrado = True
+
+
+                    # ================= STOCK INSUFICIENTE ================= #
+
+                    if producto["stock"] < cantidad:
+
+                        return False
+
+
+        if not encontrado:
+
+            return False
+
+
+    # ================= REALIZAR VENTAS ================= #
+
+    for item in productos_venta:
+
+        nombre_producto = item["producto"]
+
+        cantidad = item["cantidad"]
+
+
+        for categoria in datos:
+
+            if categoria == "Faltantes" or categoria == "Ventas":
+                continue
+
+
+            for producto in datos[categoria]:
+
+                if producto["nombre"].lower() == nombre_producto.lower():
 
                     producto["stock"] -= cantidad
 
+
                     total_venta = (
+
                         producto["precio"] *
                         cantidad
                     )
+
 
                     venta = {
 
                         "producto": producto["nombre"],
                         "cantidad": cantidad,
+                        "precio_unitario": producto["precio"],
                         "total": total_venta
                     }
+
 
                     datos["Ventas"].append(
                         venta
                     )
+
 
                     # ================= AGREGAR A FALTANTES ================= #
 
@@ -157,11 +289,13 @@ def registrar_venta(nombre_producto, cantidad):
 
                         existe = False
 
+
                         for faltante in datos["Faltantes"]:
 
-                            if faltante["nombre"] == producto["nombre"]:
+                            if faltante["nombre"].lower() == producto["nombre"].lower():
 
                                 existe = True
+
 
                         if not existe:
 
@@ -170,15 +304,25 @@ def registrar_venta(nombre_producto, cantidad):
                                 "nombre": producto["nombre"]
                             })
 
-                    guardar_datos(datos)
 
-                    return True
+                    # ================= ELIMINAR DE FALTANTES ================= #
 
-                else:
+                    else:
 
-                    return False
+                        datos["Faltantes"] = [
 
-    return False
+                            faltante
+
+                            for faltante in datos["Faltantes"]
+
+                            if faltante["nombre"].lower()
+                            != producto["nombre"].lower()
+                        ]
+
+
+    guardar_datos(datos)
+
+    return True
 
 
 # ================= OBTENER INVENTARIO ================= #
@@ -207,12 +351,17 @@ def total_productos():
 
     total = 0
 
+
     for categoria in datos:
 
         if categoria == "Faltantes" or categoria == "Ventas":
             continue
 
-        total += len(datos[categoria])
+
+        total += len(
+            datos[categoria]
+        )
+
 
     return total
 
@@ -225,14 +374,17 @@ def total_stock():
 
     total = 0
 
+
     for categoria in datos:
 
         if categoria == "Faltantes" or categoria == "Ventas":
             continue
 
+
         for producto in datos[categoria]:
 
             total += producto["stock"]
+
 
     return total
 
@@ -245,10 +397,12 @@ def valor_total_inventario():
 
     total = 0
 
+
     for categoria in datos:
 
         if categoria == "Faltantes" or categoria == "Ventas":
             continue
+
 
         for producto in datos[categoria]:
 
@@ -257,6 +411,7 @@ def valor_total_inventario():
                 producto["precio"] *
                 producto["stock"]
             )
+
 
     return total
 
@@ -269,16 +424,19 @@ def producto_mayor_stock():
 
     mayor = None
 
+
     for categoria in datos:
 
         if categoria == "Faltantes" or categoria == "Ventas":
             continue
+
 
         for producto in datos[categoria]:
 
             if mayor is None or producto["stock"] > mayor["stock"]:
 
                 mayor = producto
+
 
     return mayor
 
@@ -289,20 +447,39 @@ def eliminar_producto(nombre_producto):
 
     datos = cargar_datos()
 
+
     for categoria in datos:
 
         if categoria == "Faltantes" or categoria == "Ventas":
             continue
 
+
         for producto in datos[categoria]:
 
             if producto["nombre"].lower() == nombre_producto.lower():
 
-                datos[categoria].remove(producto)
+                datos[categoria].remove(
+                    producto
+                )
+
+
+                # ================= ELIMINAR DE FALTANTES ================= #
+
+                datos["Faltantes"] = [
+
+                    faltante
+
+                    for faltante in datos["Faltantes"]
+
+                    if faltante["nombre"].lower()
+                    != nombre_producto.lower()
+                ]
+
 
                 guardar_datos(datos)
 
                 return True
+
 
     return False
 
@@ -313,15 +490,19 @@ def total_ventas():
 
     datos = cargar_datos()
 
+
     if "Ventas" not in datos:
 
         return 0
 
+
     total = 0
+
 
     for venta in datos["Ventas"]:
 
         total += venta["total"]
+
 
     return total
 
@@ -332,8 +513,12 @@ def cantidad_ventas():
 
     datos = cargar_datos()
 
+
     if "Ventas" not in datos:
 
         return 0
 
-    return len(datos["Ventas"])
+
+    return len(
+        datos["Ventas"]
+    )

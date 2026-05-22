@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
 
 from logic.funciones_inventario import (
     actualizar_stock,
@@ -13,7 +12,7 @@ def abrir_actualizar_stock():
     ventana_stock = tk.Toplevel()
 
     ventana_stock.title("📦 Actualizar Stock")
-    ventana_stock.geometry("760x720")
+    ventana_stock.geometry("760x760")
     ventana_stock.config(bg="#1a1a1a")
     ventana_stock.resizable(False, False)
 
@@ -35,7 +34,7 @@ def abrir_actualizar_stock():
 
     subtitulo = tk.Label(
         ventana_stock,
-        text="Agregar unidades al inventario",
+        text="Agregar o restar unidades al inventario",
         font=("Arial", 12),
         bg="#1a1a1a",
         fg="#cfcfcf"
@@ -71,7 +70,8 @@ def abrir_actualizar_stock():
     labels = [
         "📦 Categoría",
         "🍾 Producto",
-        "➕ Cantidad"
+        "⚙️ Tipo",
+        "📦 Cantidad"
     ]
 
 
@@ -102,7 +102,8 @@ def abrir_actualizar_stock():
         "Vinos",
         "Ron",
         "Vodka",
-        "Tequila"
+        "Tequila",
+        "Aguardiente"
     ]
 
 
@@ -139,6 +140,51 @@ def abrir_actualizar_stock():
     )
 
 
+    # ================= COMBOBOX TIPO ================= #
+
+    tipos = [
+        "➕ Agregar",
+        "➖ Restar"
+    ]
+
+
+    combo_tipo = ttk.Combobox(
+        frame,
+        values=tipos,
+        state="readonly",
+        width=35,
+        font=("Arial", 11)
+    )
+
+    combo_tipo.grid(
+        row=2,
+        column=1,
+        padx=10
+    )
+
+    combo_tipo.current(0)
+
+
+    # ================= ENTRY CANTIDAD ================= #
+
+    entrada_cantidad = tk.Entry(
+        frame,
+        font=("Arial", 12),
+        width=38,
+        bg="#2b2b2b",
+        fg="white",
+        insertbackground="white",
+        relief="flat",
+        bd=8
+    )
+
+    entrada_cantidad.grid(
+        row=3,
+        column=1,
+        padx=10
+    )
+
+
     # ================= PANEL PRODUCTO ================= #
 
     info_producto = tk.Label(
@@ -148,11 +194,23 @@ def abrir_actualizar_stock():
         bg="#242424",
         fg="white",
         width=45,
-        height=4,
+        height=5,
         justify="left"
     )
 
     info_producto.pack(pady=15)
+
+
+    # ================= RESULTADO ================= #
+
+    resultado_label = tk.Label(
+        ventana_stock,
+        text="",
+        font=("Arial", 12, "bold"),
+        bg="#1a1a1a"
+    )
+
+    resultado_label.pack(pady=10)
 
 
     # ================= ACTUALIZAR PRODUCTOS ================= #
@@ -161,7 +219,9 @@ def abrir_actualizar_stock():
 
         categoria = combo_categoria.get()
 
-        productos = obtener_productos_categoria(categoria)
+        productos = obtener_productos_categoria(
+            categoria
+        )
 
         nombres = []
 
@@ -198,9 +258,13 @@ def abrir_actualizar_stock():
 
         categoria = combo_categoria.get()
 
-        productos = obtener_productos_categoria(categoria)
+        productos = obtener_productos_categoria(
+            categoria
+        )
 
-        nombre = combo_producto.get().split(" (Stock")[0]
+        nombre = combo_producto.get().split(
+            " (Stock"
+        )[0]
 
 
         for producto in productos:
@@ -210,11 +274,19 @@ def abrir_actualizar_stock():
                 stock = producto["stock"]
 
 
+                # ================= ALERTAS ================= #
+
                 if stock <= 5:
 
                     alerta = "\n⚠️ Stock bajo"
 
                     color = "#EF5350"
+
+                elif stock <= 15:
+
+                    alerta = "\n📦 Stock medio"
+
+                    color = "#FFD54F"
 
                 else:
 
@@ -245,43 +317,23 @@ def abrir_actualizar_stock():
     actualizar_productos()
 
 
-    # ================= ENTRY CANTIDAD ================= #
-
-    entrada_cantidad = tk.Entry(
-        frame,
-        font=("Arial", 12),
-        width=38,
-        bg="#2b2b2b",
-        fg="white",
-        insertbackground="white",
-        relief="flat",
-        bd=8
-    )
-
-    entrada_cantidad.grid(
-        row=2,
-        column=1,
-        padx=10
-    )
-
-
-    # ================= RESULTADO ================= #
-
-    resultado_label = tk.Label(
-        ventana_stock,
-        text="",
-        font=("Arial", 12, "bold"),
-        bg="#1a1a1a"
-    )
-
-    resultado_label.pack(pady=15)
-
-
     # ================= FUNCION ACTUALIZAR ================= #
 
     def actualizar():
 
-        nombre_producto = combo_producto.get().split(" (Stock")[0]
+        if combo_producto.get() == "":
+
+            resultado_label.config(
+                text="⚠️ Seleccione un producto",
+                fg="#EF5350"
+            )
+
+            return
+
+
+        nombre_producto = combo_producto.get().split(
+            " (Stock"
+        )[0]
 
 
         try:
@@ -300,6 +352,30 @@ def abrir_actualizar_stock():
             return
 
 
+        if cantidad <= 0:
+
+            resultado_label.config(
+                text="⚠️ La cantidad debe ser mayor a 0",
+                fg="#EF5350"
+            )
+
+            return
+
+
+        # ================= TIPO ================= #
+
+        tipo = combo_tipo.get()
+
+
+        # ================= RESTAR ================= #
+
+        if tipo == "➖ Restar":
+
+            cantidad = -cantidad
+
+
+        # ================= ACTUALIZAR ================= #
+
         resultado = actualizar_stock(
             nombre_producto,
             cantidad
@@ -313,14 +389,17 @@ def abrir_actualizar_stock():
                 fg="#66BB6A"
             )
 
-            entrada_cantidad.delete(0, tk.END)
+            entrada_cantidad.delete(
+                0,
+                tk.END
+            )
 
             actualizar_productos()
 
         else:
 
             resultado_label.config(
-                text="❌ Error al actualizar stock",
+                text="❌ Stock insuficiente",
                 fg="#EF5350"
             )
 

@@ -4,13 +4,13 @@
             "codigo": "C001",
             "nombre": "Corona",
             "precio": 5000,
-            "stock": 18
+            "stock": 0
         },
         {
             "codigo": "C002",
             "nombre": "Poker",
             "precio": 4500,
-            "stock": 30
+            "stock": 20
         },
         {
             "codigo": "C003",
@@ -53,9 +53,14 @@
             "nombre": "Costeñita",
             "precio": 3000,
             "stock": 40
+        },
+        {
+            "codigo": "P001",
+            "nombre": "polar",
+            "precio": 5000,
+            "stock": 0
         }
     ],
-
     "Whisky": [
         {
             "codigo": "W001",
@@ -94,7 +99,6 @@
             "stock": 11
         }
     ],
-
     "Vinos": [
         {
             "codigo": "V001",
@@ -127,7 +131,6 @@
             "stock": 6
         }
     ],
-
     "Ron": [
         {
             "codigo": "R001",
@@ -160,7 +163,6 @@
             "stock": 5
         }
     ],
-
     "Vodka": [
         {
             "codigo": "VO001",
@@ -187,7 +189,6 @@
             "stock": 8
         }
     ],
-
     "Tequila": [
         {
             "codigo": "T001",
@@ -214,7 +215,6 @@
             "stock": 9
         }
     ],
-
     "Aguardiente": [
         {
             "codigo": "A001",
@@ -241,38 +241,50 @@
             "stock": 16
         }
     ],
-
     "Faltantes": [
         {
-            "nombre": "Don Julio"
+            "nombre": "Corona"
+        },
+        {
+            "nombre": "polar"
         }
     ],
-
     "Ventas": [
         {
             "producto": "Corona",
             "cantidad": 3,
+            "precio_unitario": 5000,
             "total": 15000
         },
         {
             "producto": "Poker",
             "cantidad": 5,
+            "precio_unitario": 4500,
             "total": 22500
         },
         {
             "producto": "Old Parr",
             "cantidad": 2,
+            "precio_unitario": 120000,
             "total": 240000
         },
         {
             "producto": "Ron Medellín",
             "cantidad": 4,
+            "precio_unitario": 40000,
             "total": 160000
         },
         {
             "producto": "Aguardiente Antioqueño",
             "cantidad": 6,
+            "precio_unitario": 38000,
             "total": 228000
+        },
+        {
+            "producto": "Poker",
+            "cantidad": 10,
+            "precio_unitario": 4500,
+            "total": 45000
         }
     ]
 }

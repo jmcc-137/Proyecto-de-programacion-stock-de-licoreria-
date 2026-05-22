@@ -230,7 +230,9 @@ def abrir_inventario():
 
     for categoria in datos:
 
-        if categoria == "Faltantes":
+        # 🔥 IGNORAR TABLAS ESPECIALES
+
+        if categoria == "Faltantes" or categoria == "Ventas":
             continue
 
 

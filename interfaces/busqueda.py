@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk
 
 from logic.funciones_inventario import buscar_producto
 
@@ -9,7 +9,7 @@ def abrir_busqueda():
     ventana_busqueda = tk.Toplevel()
 
     ventana_busqueda.title("🔍 Buscar Producto")
-    ventana_busqueda.geometry("900x720")
+    ventana_busqueda.geometry("950x760")
     ventana_busqueda.config(bg="#1a1a1a")
     ventana_busqueda.resizable(False, False)
 
@@ -24,20 +24,20 @@ def abrir_busqueda():
         fg="white"
     )
 
-    titulo.pack(pady=25)
+    titulo.pack(pady=20)
 
 
     # ================= SUBTITULO ================= #
 
     subtitulo = tk.Label(
         ventana_busqueda,
-        text="Busca productos por nombre o letra",
-        font=("Arial", 13),
+        text="Busca productos por nombre, letra o categoría",
+        font=("Arial", 12),
         bg="#1a1a1a",
         fg="#cfcfcf"
     )
 
-    subtitulo.pack(pady=5)
+    subtitulo.pack(pady=3)
 
 
     # ================= LINEA ================= #
@@ -46,10 +46,10 @@ def abrir_busqueda():
         ventana_busqueda,
         bg="#333333",
         height=2,
-        width=500
+        width=560
     )
 
-    linea.pack(pady=15)
+    linea.pack(pady=12)
 
 
     # ================= FRAME BUSQUEDA ================= #
@@ -59,15 +59,15 @@ def abrir_busqueda():
         bg="#1a1a1a"
     )
 
-    frame_busqueda.pack(pady=20)
+    frame_busqueda.pack(pady=15)
 
 
-    # ================= PLACEHOLDER ================= #
+    # ================= ENTRY ================= #
 
     entrada_busqueda = tk.Entry(
         frame_busqueda,
         font=("Arial", 14),
-        width=40,
+        width=35,
         bg="#2b2b2b",
         fg="#aaaaaa",
         insertbackground="white",
@@ -75,21 +75,28 @@ def abrir_busqueda():
         bd=10
     )
 
+    entrada_busqueda.grid(
+        row=0,
+        column=0,
+        padx=10
+    )
+
     entrada_busqueda.insert(
         0,
         "🔍 Buscar producto..."
     )
 
-    entrada_busqueda.pack()
 
-
-    # ================= FUNCION PLACEHOLDER ================= #
+    # ================= PLACEHOLDER ================= #
 
     def borrar_placeholder(event):
 
         if entrada_busqueda.get() == "🔍 Buscar producto...":
 
-            entrada_busqueda.delete(0, tk.END)
+            entrada_busqueda.delete(
+                0,
+                tk.END
+            )
 
             entrada_busqueda.config(
                 fg="white"
@@ -121,7 +128,62 @@ def abrir_busqueda():
     )
 
 
-    # ================= FRAME RESULTADOS ================= #
+    # ================= COMBOBOX ================= #
+
+    categorias = [
+        "Todas",
+        "Cervezas",
+        "Whisky",
+        "Vinos",
+        "Ron",
+        "Vodka",
+        "Tequila",
+        "Aguardiente"
+    ]
+
+
+    combo_categoria = ttk.Combobox(
+        frame_busqueda,
+        values=categorias,
+        state="readonly",
+        width=22,
+        font=("Arial", 11)
+    )
+
+    combo_categoria.grid(
+        row=0,
+        column=1,
+        padx=10
+    )
+
+    combo_categoria.current(0)
+
+
+    # ================= BOTON BUSCAR ================= #
+
+    btn_buscar = tk.Button(
+        frame_busqueda,
+        text="🔎 Buscar",
+        bg="#FB8C00",
+        fg="white",
+        activebackground="#FFB74D",
+        activeforeground="white",
+        font=("Arial", 11, "bold"),
+        width=16,
+        height=1,
+        relief="flat",
+        bd=0,
+        cursor="hand2"
+    )
+
+    btn_buscar.grid(
+        row=0,
+        column=2,
+        padx=10
+    )
+
+
+    # ================= FRAME RESULTADO ================= #
 
     frame_resultado = tk.Frame(
         ventana_busqueda,
@@ -137,10 +199,7 @@ def abrir_busqueda():
     # ================= SCROLL ================= #
 
     scroll = tk.Scrollbar(
-        frame_resultado,
-        bg="#2b2b2b",
-        troughcolor="#1a1a1a",
-        activebackground="#444444"
+        frame_resultado
     )
 
     scroll.pack(
@@ -149,54 +208,69 @@ def abrir_busqueda():
     )
 
 
-    # ================= AREA RESULTADOS ================= #
+    # ================= AREA TEXTO ================= #
 
     resultado_texto = tk.Text(
         frame_resultado,
-        font=("Consolas", 12),
+        font=("Consolas", 11),
         bg="#242424",
         fg="white",
-        width=80,
-        height=15,
+        width=100,
+        height=22,
         relief="flat",
         bd=10,
         yscrollcommand=scroll.set
     )
 
-    resultado_texto.pack(side="left")
+    resultado_texto.pack(
+        side="left"
+    )
 
-    resultado_texto.config(state="disabled")
+    resultado_texto.config(
+        state="disabled"
+    )
 
-    scroll.config(command=resultado_texto.yview)
+    scroll.config(
+        command=resultado_texto.yview
+    )
 
 
-    # ================= FUNCION BUSCAR ================= #
+    # ================= FUNCION BUSQUEDA ================= #
 
     def realizar_busqueda():
 
         nombre_producto = entrada_busqueda.get()
 
-
-        if (
-            nombre_producto == "" or
-            nombre_producto == "🔍 Buscar producto..."
-        ):
-
-            messagebox.showwarning(
-                "Advertencia",
-                "⚠️ Ingresa un producto para buscar"
-            )
-
-            return
+        categoria = combo_categoria.get()
 
 
-        productos = buscar_producto(nombre_producto)
+        if nombre_producto == "🔍 Buscar producto...":
+
+            nombre_producto = ""
 
 
-        resultado_texto.config(state="normal")
+        if categoria == "Todas":
 
-        resultado_texto.delete("1.0", tk.END)
+            categoria = None
 
+
+        productos = buscar_producto(
+            nombre_producto,
+            categoria
+        )
+
+
+        resultado_texto.config(
+            state="normal"
+        )
+
+        resultado_texto.delete(
+            "1.0",
+            tk.END
+        )
+
+
+        # ================= RESULTADOS ================= #
 
         if productos:
 
@@ -205,12 +279,33 @@ def abrir_busqueda():
 
             for producto in productos:
 
+                stock = producto["stock"]
+
+
+                # ================= ESTADO ================= #
+
+                if stock <= 5:
+
+                    estado = "⚠️ STOCK BAJO"
+
+                elif stock <= 15:
+
+                    estado = "📦 STOCK MEDIO"
+
+                else:
+
+                    estado = "✅ STOCK ALTO"
+
+
                 texto += (
-                    f"🍾 CÓDIGO : {producto['codigo']}\n"
-                    f"🥃 PRODUCTO: {producto['nombre']}\n"
-                    f"💰 PRECIO  : ${producto['precio']}\n"
-                    f"📦 STOCK   : {producto['stock']}\n"
-                    f"{'═'*55}\n\n"
+
+                    f"📦 CATEGORÍA : {producto['categoria']}\n"
+                    f"🍾 CÓDIGO    : {producto['codigo']}\n"
+                    f"🥃 PRODUCTO  : {producto['nombre']}\n"
+                    f"💰 PRECIO    : ${producto['precio']}\n"
+                    f"📦 STOCK     : {producto['stock']}\n"
+                    f"📊 ESTADO    : {estado}\n"
+                    f"{'═'*70}\n\n"
                 )
 
 
@@ -227,40 +322,28 @@ def abrir_busqueda():
             )
 
 
-        resultado_texto.config(state="disabled")
+        resultado_texto.config(
+            state="disabled"
+        )
 
 
-    # ================= BOTON BUSCAR ================= #
+    # ================= ACTIVAR BOTON ================= #
 
-    btn_buscar = tk.Button(
-        ventana_busqueda,
-        text="🔎 Buscar",
-        bg="#FB8C00",
-        fg="white",
-        activebackground="#FFB74D",
-        activeforeground="white",
-        font=("Arial", 12, "bold"),
-        width=22,
-        height=2,
-        relief="flat",
-        bd=0,
-        cursor="hand2",
+    btn_buscar.config(
         command=realizar_busqueda
     )
 
-    btn_buscar.pack(pady=15)
 
+    # ================= HOVER ================= #
 
-    # ================= EFECTO HOVER ================= #
-
-    def hover_entrar(e):
+    def entrar_hover(e):
 
         btn_buscar.config(
             bg="#FFB74D"
         )
 
 
-    def hover_salir(e):
+    def salir_hover(e):
 
         btn_buscar.config(
             bg="#FB8C00"
@@ -269,12 +352,12 @@ def abrir_busqueda():
 
     btn_buscar.bind(
         "<Enter>",
-        hover_entrar
+        entrar_hover
     )
 
     btn_buscar.bind(
         "<Leave>",
-        hover_salir
+        salir_hover
     )
 
 
@@ -296,4 +379,33 @@ def abrir_busqueda():
         command=ventana_busqueda.destroy
     )
 
-    btn_cerrar.pack(pady=15)
+    btn_cerrar.pack(
+        pady=12
+    )
+
+
+    # ================= HOVER BOTON CERRAR ================= #
+
+    def hover_cerrar_entrar(e):
+
+        btn_cerrar.config(
+            bg="#E53935"
+        )
+
+
+    def hover_cerrar_salir(e):
+
+        btn_cerrar.config(
+            bg="#C62828"
+        )
+
+
+    btn_cerrar.bind(
+        "<Enter>",
+        hover_cerrar_entrar
+    )
+
+    btn_cerrar.bind(
+        "<Leave>",
+        hover_cerrar_salir
+    )
